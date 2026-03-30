@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int carFleet(int target, vector<int>& position, vector<int>& speed) {
+        int n = position.size();
+        
+        // Pair position with time to reach target
+        vector<pair<int, double>> cars;
+        for(int i = 0; i < n; i++) {
+            double time = (double)(target - position[i]) / speed[i];
+            cars.push_back({position[i], time});
+        }
+
+        // Sort by position descending (closest first)
+        sort(cars.rbegin(), cars.rend());
+
+        stack<double> st;
+
+        for(auto &car : cars) {
+            double time = car.second;
+
+            // If current car takes more time → new fleet
+            if(st.empty() || time > st.top()) {
+                st.push(time);
+            }
+            // else: it joins existing fleet → do nothing
+        }
+
+        return st.size();
+    }
+};
